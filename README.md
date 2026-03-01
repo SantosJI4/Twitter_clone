@@ -125,4 +125,4 @@ projeto-final/
 Este projeto foi desenvolvido como exercício final acadêmico.
 
 ## Autor
-Maurício Santana
+Jisantos
