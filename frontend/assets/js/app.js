@@ -248,6 +248,16 @@ class App {
             <button class="modal-close" id="modal-close-btn">&times;</button>
           </div>
           <form id="edit-profile-form" class="modal-body">
+            <div class="edit-avatar-section">
+              <div class="edit-avatar-preview">
+                <img src="${Utils.avatarUrl(u)}" alt="Avatar" id="edit-avatar-img" class="edit-avatar-img">
+                <label for="edit-profile-image" class="edit-avatar-overlay">
+                  <i class="fas fa-camera"></i>
+                  <span>Alterar foto</span>
+                </label>
+                <input type="file" id="edit-profile-image" accept="image/jpeg,image/png,image/gif,image/webp" style="display:none">
+              </div>
+            </div>
             <div class="form-group"><label for="edit-first-name">Nome</label><input type="text" id="edit-first-name" name="first_name" value="${u.first_name || ''}" required></div>
             <div class="form-group"><label for="edit-last-name">Sobrenome</label><input type="text" id="edit-last-name" name="last_name" value="${u.last_name || ''}" required></div>
             <div class="form-group"><label for="edit-bio">Bio</label><textarea id="edit-bio" name="bio" placeholder="Conte algo sobre você" maxlength="160">${u.bio || ''}</textarea></div>
@@ -258,6 +268,19 @@ class App {
               <button type="submit" class="btn btn-primary">Salvar</button>
             </div>
           </form>
+          <div class="modal-divider"></div>
+          <div class="modal-body">
+            <h3 class="modal-section-title"><i class="fas fa-lock"></i> Alterar Senha</h3>
+            <form id="change-password-form">
+              <div class="form-group"><label for="old-password">Senha atual</label><input type="password" id="old-password" name="old_password" required placeholder="Sua senha atual"></div>
+              <div class="form-group"><label for="new-password">Nova senha</label><input type="password" id="new-password" name="new_password" required placeholder="Mínimo 8 caracteres" minlength="8"></div>
+              <div class="form-group"><label for="new-password-confirm">Confirmar nova senha</label><input type="password" id="new-password-confirm" name="new_password_confirm" required placeholder="Confirme a nova senha"></div>
+              <div id="password-feedback" class="form-feedback"></div>
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Alterar Senha</button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>`;
 
@@ -275,23 +298,91 @@ class App {
     document.getElementById('modal-cancel-btn')?.addEventListener('click', () => modal.classList.remove('active'));
     modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
 
+    // Profile image preview
+    this._selectedProfileImage = null;
+    document.getElementById('edit-profile-image')?.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Imagem muito grande. Máximo 5MB.');
+        e.target.value = '';
+        return;
+      }
+      this._selectedProfileImage = file;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const img = document.getElementById('edit-avatar-img');
+        if (img) img.src = ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Edit profile form
     document.getElementById('edit-profile-form')?.addEventListener('submit', async (e) => {
       e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Salvando...';
       try {
-        const fd = new FormData(e.target);
-        const data = {
-          first_name: fd.get('first_name'),
-          last_name: fd.get('last_name'),
-          bio: fd.get('bio'),
-          location: fd.get('location'),
-          website: fd.get('website')
-        };
-        const response = await api.updateProfile(data);
-        this.currentUser = { ...this.currentUser, ...response };
+        const formData = new FormData();
+        formData.append('first_name', document.getElementById('edit-first-name').value);
+        formData.append('last_name', document.getElementById('edit-last-name').value);
+        formData.append('bio', document.getElementById('edit-bio').value);
+        formData.append('location', document.getElementById('edit-location').value);
+        formData.append('website', document.getElementById('edit-website').value);
+        if (this._selectedProfileImage) {
+          formData.append('profile_image', this._selectedProfileImage);
+        }
+        const response = await api.updateProfile(formData);
+        this.currentUser = response.user || { ...this.currentUser, ...response };
+        api.setUserData(this.currentUser);
+        this._selectedProfileImage = null;
         modal.classList.remove('active');
         this.renderOwnProfile();
-      } catch {
+        this.updateUserUI();
+      } catch (err) {
         alert('Erro ao atualizar perfil.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Salvar';
+      }
+    });
+
+    // Change password form
+    document.getElementById('change-password-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const feedback = document.getElementById('password-feedback');
+      const btn = e.target.querySelector('button[type="submit"]');
+      const newPass = document.getElementById('new-password').value;
+      const confirmPass = document.getElementById('new-password-confirm').value;
+
+      if (newPass !== confirmPass) {
+        feedback.textContent = 'As senhas não coincidem.';
+        feedback.className = 'form-feedback error';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Alterando...';
+      feedback.textContent = '';
+      feedback.className = 'form-feedback';
+
+      try {
+        await api.changePassword({
+          old_password: document.getElementById('old-password').value,
+          new_password: newPass,
+          new_password_confirm: confirmPass
+        });
+        feedback.textContent = 'Senha alterada com sucesso!';
+        feedback.className = 'form-feedback success';
+        e.target.reset();
+      } catch (err) {
+        const msg = err?.data?.old_password?.[0] || err?.data?.new_password?.[0] || err?.message || 'Erro ao alterar senha.';
+        feedback.textContent = msg;
+        feedback.className = 'form-feedback error';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Alterar Senha';
       }
     });
   }

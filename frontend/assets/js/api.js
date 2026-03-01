@@ -156,7 +156,11 @@ class ApiClient {
   // ─── Users API ───
 
   async getProfile() { return this.get(API_CONFIG.ENDPOINTS.PROFILE); }
-  async updateProfile(data) { return this.put(API_CONFIG.ENDPOINTS.PROFILE, data); }
+  async updateProfile(data) {
+    if (data instanceof FormData) return this.put(API_CONFIG.ENDPOINTS.PROFILE, data);
+    return this.put(API_CONFIG.ENDPOINTS.PROFILE, data);
+  }
+  async changePassword(data) { return this.post(API_CONFIG.ENDPOINTS.CHANGE_PASSWORD, data); }
   async getUser(username) { return this.get(`${API_CONFIG.ENDPOINTS.USERS}${username}/`); }
   async followUser(username) { return this.post(API_CONFIG.ENDPOINTS.FOLLOW(username)); }
   async unfollowUser(username) { return this.post(API_CONFIG.ENDPOINTS.UNFOLLOW(username)); }

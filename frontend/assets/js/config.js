@@ -7,6 +7,7 @@ const API_CONFIG = {
     REGISTER: '/auth/register/',
     REFRESH_TOKEN: '/token/refresh/',
     PROFILE: '/auth/profile/',
+    CHANGE_PASSWORD: '/auth/change-password/',
     USERS: '/auth/users/',
     FOLLOW: (u) => `/auth/users/${u}/follow/`,
     UNFOLLOW: (u) => `/auth/users/${u}/unfollow/`,
