@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TwitterClone - Rede Social</title>
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/auth.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-overlay">
+        <div class="spinner"></div>
+        <p>Carregando...</p>
+    </div>
+
+    <!-- App Container -->
+    <div id="app" class="app-container">
+        
+        <!-- Authentication Container -->
+        <div id="auth-container" class="auth-container">
+            <!-- Login Form -->
+            <div id="login-form" class="auth-form active">
+                <div class="auth-header">
+                    <div class="logo">
+                        <i class="fab fa-twitter"></i>
+                        <h1>TwitterClone</h1>
+                    </div>
+                    <h2>Entrar na sua conta</h2>
+                    <p>Bem-vindo de volta! Conecte-se com seus amigos.</p>
+                </div>
+                
+                <form id="login-submit" class="form">
+                    <div id="login-errors" class="error-message"></div>
+                    
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input 
+                            type="email" 
+                            id="login-email" 
+                            name="email" 
+                            placeholder="seu@email.com"
+                            required
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-password">Senha</label>
+                        <div class="password-field">
+                            <input 
+                                type="password" 
+                                id="login-password" 
+                                name="password" 
+                                placeholder="Sua senha"
+                                required
+                            >
+                            <button type="button" class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <span class="btn-text">Entrar</span>
+                        <div class="btn-spinner"></div>
+                    </button>
+                </form>
+                
+                <div class="auth-footer">
+                    <p>Não tem uma conta? 
+                        <a href="#" id="show-register" class="auth-link">Criar conta</a>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form" class="auth-form">
+                <div class="auth-header">
+                    <div class="logo">
+                        <i class="fab fa-twitter"></i>
+                        <h1>TwitterClone</h1>
+                    </div>
+                    <h2>Criar nova conta</h2>
+                    <p>Junte-se à nossa comunidade hoje!</p>
+                </div>
+                
+                <form id="register-submit" class="form">
+                    <div id="register-errors" class="error-message"></div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="register-first-name">Nome</label>
+                            <input 
+                                type="text" 
+                                id="register-first-name" 
+                                name="first_name" 
+                                placeholder="Seu nome"
+                                required
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="register-last-name">Sobrenome</label>
+                            <input 
+                                type="text" 
+                                id="register-last-name" 
+                                name="last_name" 
+                                placeholder="Seu sobrenome"
+                                required
+                            >
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-username">Nome de usuário</label>
+                        <input 
+                            type="text" 
+                            id="register-username" 
+                            name="username" 
+                            placeholder="@seunome"
+                            required
+                        >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input 
+                            type="email" 
+                            id="register-email" 
+                            name="email" 
+                            placeholder="seu@email.com"
+                            required
+                        >
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="register-password">Senha</label>
+                            <div class="password-field">
+                                <input 
+                                    type="password" 
+                                    id="register-password" 
+                                    name="password" 
+                                    placeholder="Mínimo 8 caracteres"
+                                    required
+                                >
+                                <button type="button" class="password-toggle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password-confirm">Confirmar Senha</label>
+                            <div class="password-field">
+                                <input 
+                                    type="password" 
+                                    id="register-password-confirm" 
+                                    name="password_confirm" 
+                                    placeholder="Confirme sua senha"
+                                    required
+                                >
+                                <button type="button" class="password-toggle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <span class="btn-text">Criar Conta</span>
+                        <div class="btn-spinner"></div>
+                    </button>
+                </form>
+                
+                <div class="auth-footer">
+                    <p>Já tem uma conta? 
+                        <a href="#" id="show-login" class="auth-link">Fazer login</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App Container (Hidden initially) -->
+        <div id="main-app" class="main-app" style="display: none;">
+            <!-- Navigation -->
+            <nav class="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo">
+                        <i class="fab fa-twitter"></i>
+                        <span class="logo-text">TwitterClone</span>
+                    </div>
+                </div>
+                
+                <div class="sidebar-menu">
+                    <a href="#" class="menu-item active" data-page="feed">
+                        <i class="fas fa-home"></i>
+                        <span>Feed</span>
+                    </a>
+                    <a href="#" class="menu-item" data-page="explore">
+                        <i class="fas fa-hashtag"></i>
+                        <span>Explorar</span>
+                    </a>
+                    <a href="#" class="menu-item" data-page="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span>Notificações</span>
+                        <span id="notification-badge" class="badge">0</span>
+                    </a>
+                    <a href="#" class="menu-item" data-page="profile">
+                        <i class="fas fa-user"></i>
+                        <span>Perfil</span>
+                    </a>
+                </div>
+                
+                <div class="sidebar-footer">
+                    <div class="user-menu">
+                        <div class="user-info" id="sidebar-user">
+                            <img src="assets/images/default-avatar.svg" alt="User" class="user-avatar">
+                            <div class="user-details">
+                                <div class="user-name">Carregando...</div>
+                                <div class="user-username">@carregando</div>
+                            </div>
+                        </div>
+                        <div class="user-menu-items">
+                            <a href="#" id="logout-btn" class="menu-item">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Sair</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content Area -->
+            <main class="main-content">
+                <!-- Feed Page -->
+                <div id="feed-page" class="page active">
+                    <div class="page-header">
+                        <h1>Feed</h1>
+                    </div>
+                    
+                    <!-- Post Composer -->
+                    <div class="post-composer">
+                        <form id="compose-form" class="composer-form">
+                            <div class="composer-header">
+                                <img src="assets/images/default-avatar.svg" alt="You" class="user-avatar" id="composer-avatar">
+                                <div class="composer-input">
+                                    <textarea 
+                                        id="compose-input" 
+                                        placeholder="O que está acontecendo?"
+                                        maxlength="280"
+                                        rows="1"
+                                    ></textarea>
+                                    <div id="image-preview" class="image-preview"></div>
+                                </div>
+                            </div>
+                            <div class="composer-footer">
+                                <div class="composer-actions">
+                                    <div class="file-upload">
+                                        <input type="file" id="image-upload" accept="image/jpeg,image/jpg,image/png,image/gif,image/webp">
+                                        <label for="image-upload" class="upload-btn">
+                                            <i class="fas fa-image"></i>
+                                            <span class="upload-label-text">Mídia</span>
+                                        </label>
+                                    </div>
+                                    <div class="character-count">
+                                        <span id="character-count">0/280</span>
+                                    </div>
+                                </div>
+                                <button type="submit" id="compose-btn" class="btn btn-primary" disabled>
+                                    Postar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <!-- Posts Feed -->
+                    <div id="feed-posts" class="posts-container">
+                        <div class="loading-posts">
+                            <div class="spinner"></div>
+                            <p>Carregando posts...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Explore Page -->
+                <div id="explore-page" class="page">
+                    <div class="page-header">
+                        <h1>Explorar</h1>
+                        <div class="profile-menu-wrapper" id="explore-menu-wrapper">
+                            <button class="profile-menu-toggle" id="explore-menu-toggle">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </button>
+                            <div class="profile-nav-menu" id="explore-nav-menu">
+                                <a href="#" class="profile-nav-item" data-page="feed">
+                                    <i class="fas fa-home"></i> Feed
+                                </a>
+                                <a href="#" class="profile-nav-item" data-page="notifications">
+                                    <i class="fas fa-bell"></i> Notificações
+                                </a>
+                                <a href="#" class="profile-nav-item" data-page="profile">
+                                    <i class="fas fa-user"></i> Perfil
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Search Bar -->
+                    <div class="explore-search">
+                        <form id="explore-search-form" class="explore-search-form" onsubmit="return false">
+                            <div class="explore-search-input-wrapper">
+                                <i class="fas fa-search explore-search-icon"></i>
+                                <input type="search" id="explore-search-input" placeholder="Buscar posts, usuários ou #hashtags" autocomplete="off">
+                                <button type="button" id="explore-search-clear" class="explore-search-clear" style="display:none">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </form>
+                        <div id="search-results-tabs" class="search-tabs" style="display:none">
+                            <button type="button" class="search-tab active" data-tab="posts">Posts</button>
+                            <button type="button" class="search-tab" data-tab="users">Usuários</button>
+                        </div>
+                    </div>
+                    
+                    <div id="explore-posts" class="posts-container">
+                        <div class="loading-posts">
+                            <div class="spinner"></div>
+                            <p>Carregando posts populares...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="notifications-page" class="page">
+                    <div class="page-header">
+                        <h1>Notificações</h1>
+                        <div class="profile-menu-wrapper" id="notifications-menu-wrapper">
+                            <button class="profile-menu-toggle" id="notifications-menu-toggle">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </button>
+                            <div class="profile-nav-menu" id="notifications-nav-menu">
+                                <a href="#" class="profile-nav-item" data-page="feed">
+                                    <i class="fas fa-home"></i> Feed
+                                </a>
+                                <a href="#" class="profile-nav-item" data-page="explore">
+                                    <i class="fas fa-hashtag"></i> Explorar
+                                </a>
+                                <a href="#" class="profile-nav-item" data-page="profile">
+                                    <i class="fas fa-user"></i> Perfil
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="notifications-container" class="notifications-container">
+                        <!-- Notificações serão carregadas aqui -->
+                    </div>
+                </div>
+
+                <div id="profile-page" class="page">
+                    <div class="page-header profile-page-header">
+                        <h1>Perfil</h1>
+                        <div class="profile-menu-wrapper" id="profile-header-menu-wrapper">
+                            <button class="profile-menu-toggle" id="profile-header-menu-toggle">
+                                <span></span>
+                                <span></span>
+                                <span></span>
+                            </button>
+                            <div class="profile-nav-menu" id="profile-header-nav-menu">
+                                <a href="#" class="profile-nav-item" data-page="feed">
+                                    <i class="fas fa-home"></i> Feed
+                                </a>
+                                <a href="#" class="profile-nav-item" data-page="explore">
+                                    <i class="fas fa-hashtag"></i> Explorar
+                                </a>
+                                <a href="#" class="profile-nav-item" data-page="notifications">
+                                    <i class="fas fa-bell"></i> Notificações
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="profile-container" class="profile-container">
+                        <!-- Perfil será carregado aqui -->
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar -->
+            <aside class="right-sidebar">
+                <div class="widget">
+                    <h3><i class="fas fa-fire"></i> Trending</h3>
+                    <div id="trending-topics" class="trending-topics">
+                        <div class="loading-posts"><div class="spinner"></div></div>
+                    </div>
+                </div>
+                <div class="widget">
+                    <h3>Sugestões para você</h3>
+                    <div id="suggested-users" class="suggested-users">
+                        <!-- Usuários sugeridos serão carregados aqui -->
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Post Comments Modal -->
+    <div id="post-comments-modal" class="post-comments-modal">
+        <div class="post-comments-backdrop"></div>
+        <div class="post-comments-container">
+            <!-- Post Header with Close Button -->
+            <div class="post-comments-header">
+                <h2>Comentários</h2>
+                <button class="close-btn" id="close-comments-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Original Post -->
+            <div class="post-comments-original-post">
+                <!-- Original post details will be loaded here -->
+            </div>
+
+            <!-- Comments List -->
+            <div class="post-comments-list">
+                <div class="comments-loading">
+                    <div class="spinner"></div>
+                    <p>Carregando comentários...</p>
+                </div>
+            </div>
+
+            <!-- Comment Input Form -->
+            <div class="post-comment-form">
+                <img src="assets/images/default-avatar.svg" alt="Avatar" class="comment-form-avatar">
+                <div class="comment-form-input-wrapper">
+                    <textarea 
+                        id="comment-textarea" 
+                        class="comment-textarea"
+                        placeholder="Compartilhe sua resposta!"
+                        maxlength="280"
+                    ></textarea>
+                    <div class="comment-form-footer">
+                        <span id="comment-char-count" class="char-count">0/280</span>
+                        <button id="submit-comment-btn" class="btn-post" disabled>
+                            Responder
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reply Modal -->
+    <div id="reply-modal" class="reply-modal">
+        <div class="reply-backdrop"></div>
+        <div class="reply-container">
+            <!-- Reply Header -->
+            <div class="reply-header">
+                <h3>Respondendo a <span id="replying-to-name"></span></h3>
+                <button class="close-btn" id="close-reply-btn">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Original Comment -->
+            <div class="reply-original-comment">
+                <!-- Original comment will be loaded here -->
+            </div>
+
+            <!-- Reply Input -->
+            <div class="reply-form">
+                <img src="assets/images/default-avatar.svg" alt="Avatar" class="reply-form-avatar">
+                <div class="reply-form-input-wrapper">
+                    <textarea 
+                        id="reply-textarea" 
+                        class="reply-textarea"
+                        placeholder="Compartilhe sua resposta!"
+                        maxlength="280"
+                    ></textarea>
+                    <div class="reply-form-footer">
+                        <span id="reply-char-count" class="char-count">0/280</span>
+                        <button id="submit-reply-btn" class="btn-post" disabled>
+                            Responder
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Profile Modal -->
+    <div id="user-profile-modal" class="user-profile-modal">
+        <div class="profile-backdrop"></div>
+        <div class="profile-modal-content">
+            <!-- Profile content will be loaded here -->
+        </div>
+    </div>
+
+    <!-- JavaScript Files -->
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/comments.js"></script>
+    <script src="assets/js/profile.js"></script>
+    <script src="assets/js/posts.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
