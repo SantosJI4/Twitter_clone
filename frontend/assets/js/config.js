@@ -1,5 +1,7 @@
 const API_CONFIG = {
-  BASE_URL: 'http://127.0.0.1:8000/api',
+  BASE_URL: (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost')
+    ? 'http://127.0.0.1:8000/api'
+    : `${window.location.origin}/api`,
   ENDPOINTS: {
     LOGIN: '/auth/login/',
     REGISTER: '/auth/register/',
@@ -111,7 +113,7 @@ const Utils = {
   },
 
   avatarUrl(user) {
-    return user?.profile_image_url || user?.profile_image || 'assets/images/default-avatar.svg';
+    return user?.profile_image_url || user?.profile_image || '/static/assets/images/default-avatar.svg';
   },
 
   fullName(user) {
