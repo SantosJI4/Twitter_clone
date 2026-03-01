@@ -12,3 +12,6 @@ python manage.py collectstatic --noinput
 
 # Aplicar migrations no banco de dados
 python manage.py migrate
+
+# Criar usuários e posts de teste
+python create_test_users.py

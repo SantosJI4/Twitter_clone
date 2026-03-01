@@ -15,6 +15,8 @@
   border-radius: 1rem;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   display: none;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .auth-form.active {
@@ -92,12 +94,14 @@
   flex-direction: column;
   gap: 0.5rem;
   margin-bottom: 0.5rem;
+  min-width: 0;
 }
 
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+  width: 100%;
 }
 
 .form-group label {
@@ -117,6 +121,8 @@
   color: var(--text-primary);
   transition: all 0.2s ease;
   line-height: 1.5;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-group input::placeholder,
@@ -163,9 +169,14 @@
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 
-.password-field input { flex: 1; }
+.password-field input {
+  flex: 1;
+  padding-right: 2.75rem;
+  min-width: 0;
+}
 
 .password-toggle {
   position: absolute;
