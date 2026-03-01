@@ -3,6 +3,7 @@ class App {
     this.currentUser = null;
     this.currentPage = 'feed';
     this.isInitialized = false;
+    this.appReady = false;
     this.init();
   }
 
@@ -34,6 +35,7 @@ class App {
   }
 
   async initializeApp() {
+    if (this.appReady) return;
     try {
       await this.loadCurrentUser();
       this.initNavigation();
@@ -41,6 +43,7 @@ class App {
       this.initFeatures();
       await this.loadPage('feed');
       authManager.redirectToApp();
+      this.appReady = true;
     } catch (error) {
       if (error.status === 401) authManager.handleLogout();
       else alert('Erro ao carregar aplicação. Tente recarregar.');
@@ -752,7 +755,7 @@ class App {
   }
 
   bindGlobalEvents() {
-    window.addEventListener('auth:success', () => { if (!this.isInitialized) this.initializeApp(); });
+    window.addEventListener('auth:success', () => this.initializeApp());
     window.addEventListener('auth:logout:complete', () => this.reset());
     this.initScrollToTop();
   }
@@ -769,6 +772,7 @@ class App {
   reset() {
     this.currentUser = null;
     this.currentPage = 'feed';
+    this.appReady = false;
     this.updateNotificationBadge(0);
   }
 
